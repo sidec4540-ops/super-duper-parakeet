@@ -100,8 +100,9 @@ print(f"{Fore.MAGENTA}{Style.BRIGHT} * Донат: {Fore.BLUE}{Style.BRIGHT}t.me
 print(f"{Fore.MAGENTA}{Style.BRIGHT} * Telegram-чат: {Fore.BLUE}{Style.BRIGHT}t.me/funpay_cardinal")
 
 if not os.path.exists("configs/_main.cfg"):
-    first_setup()
-    sys.exit()
+    print("Файл configs/_main.cfg не найден, но мы его игнорируем")
+    # first_setup()
+    # sys.exit()
 
 if sys.platform == "linux" and os.getenv('FPC_IS_RUNNIG_AS_SERVICE', '0') == '1':
     import getpass
