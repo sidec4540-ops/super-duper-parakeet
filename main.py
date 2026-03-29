@@ -32,7 +32,7 @@ logger = logging.getLogger("main")
 print(f"{Fore.RED}{Style.BRIGHT}v{VERSION}{Style.RESET_ALL}\n")
 print(f"{Fore.MAGENTA}{Style.BRIGHT}By Woopertail, @sidor0912{Style.RESET_ALL}")
 
-# СОЗДАЁМ ПРАВИЛЬНЫЙ КОНФИГ ОБЪЕКТ
+# СОЗДАЁМ КОНФИГ КАК ОБЪЕКТ
 MAIN_CFG = ConfigParser(delimiters=(":",), interpolation=None)
 MAIN_CFG.optionxform = str
 
@@ -115,6 +115,15 @@ MAIN_CFG["ReviewReply"] = {
     "star5ReplyText": ""
 }
 
+# ВАЖНО: Создаём пустые объекты для AR_CFG и AD_CFG
+AR_CFG = ConfigParser(delimiters=(":",), interpolation=None)
+AR_CFG.optionxform = str
+
+AD_CFG = ConfigParser(delimiters=(":",), interpolation=None)
+AD_CFG.optionxform = str
+
+RAW_AR_CFG = {}
+
 localizer = Localizer("ru")
 _ = localizer.translate
 
@@ -122,7 +131,7 @@ logger.info("Запуск бота...")
 print("Бот запускается...")
 
 try:
-    Cardinal(MAIN_CFG, {}, {}, {}, VERSION).init().run()
+    Cardinal(MAIN_CFG, AD_CFG, AR_CFG, RAW_AR_CFG, VERSION).init().run()
 except KeyboardInterrupt:
     logger.info("Завершаю программу...")
     sys.exit()
