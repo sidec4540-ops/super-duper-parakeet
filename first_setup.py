@@ -182,20 +182,22 @@ def first_setup():
     print(f"\n{Fore.CYAN}{Style.BRIGHT}Давай ка проведем первичную настройку! {Fore.RED}°++°{Style.RESET_ALL}")
     time.sleep(sleep_time)
 
-   while True:
-    print(f"\n{Fore.MAGENTA}{Style.BRIGHT}┌── {Fore.CYAN}"
-          f"Для начала введи токен (golden_key) твоего FunPay аккаунта (посмотреть его можно в расширении EditThisCookie) {Fore.RED}(._.){Style.RESET_ALL}")
-    # Берем токен из переменной окружения, если есть
-    golden_key = os.getenv('FUNPAY_TOKEN', '')
-    if not golden_key:
-        golden_key = input(f"{Fore.MAGENTA}{Style.BRIGHT}└───> {Style.RESET_ALL}").strip()
-    if len(golden_key) != 32:
-        print(
-            f"\n{Fore.CYAN}{Style.BRIGHT}Неверный формат токена. Попробуй еще раз! {Fore.RED}\(!!˚0˚)/{Style.RESET_ALL}")
-        continue
-    config.set("FunPay", "golden_key", golden_key)
-    break
+    # Настройка FunPay токена
+    while True:
+        print(f"\n{Fore.MAGENTA}{Style.BRIGHT}┌── {Fore.CYAN}"
+              f"Для начала введи токен (golden_key) твоего FunPay аккаунта (посмотреть его можно в расширении EditThisCookie) {Fore.RED}(._.){Style.RESET_ALL}")
+        # Берем токен из переменной окружения, если есть
+        golden_key = os.getenv('FUNPAY_TOKEN', '')
+        if not golden_key:
+            golden_key = input(f"{Fore.MAGENTA}{Style.BRIGHT}└───> {Style.RESET_ALL}").strip()
+        if len(golden_key) != 32:
+            print(
+                f"\n{Fore.CYAN}{Style.BRIGHT}Неверный формат токена. Попробуй еще раз! {Fore.RED}\(!!˚0˚)/{Style.RESET_ALL}")
+            continue
+        config.set("FunPay", "golden_key", golden_key)
+        break
 
+    # Настройка User-Agent
     while True:
         print(f"\n{Fore.MAGENTA}{Style.BRIGHT}┌── {Fore.CYAN}"
               f"Если хочешь, ты можешь указать свой User-agent (введи в Google \"my user agent\"). Или можешь просто нажать Enter. "
@@ -209,6 +211,7 @@ def first_setup():
             config.set("FunPay", "user_agent", user_agent)
         break
 
+    # Настройка прокси для Telegram
     print(f"\n{Fore.MAGENTA}{Style.BRIGHT}┌── {Fore.CYAN}" f"Если хочешь использовать IPv4 прокси ДЛЯ ДОСТУПА К TELEGRAM"
           f" – укажи их в формате scheme://login:password@ip:port, login:password@ip:port или ip:port."
           f" Если ты не знаешь, " f"что это такое или они тебе не нужны - просто нажми Enter. " 
@@ -218,12 +221,17 @@ def first_setup():
     if proxy:
         config.set("Telegram", "proxy", proxy)
 
-
+    # Настройка Telegram бота (токен из переменной окружения или ввод)
     while True:
         print(
             f"\n{Fore.MAGENTA}{Style.BRIGHT}┌── {Fore.CYAN}Введи API-токен Telegram-бота (получить его можно у @BotFather). "
             f"@username бота должен начинаться с \"funpay\". {Fore.RED}(._.){Style.RESET_ALL}")
-        token = input(f"{Fore.MAGENTA}{Style.BRIGHT}└───> {Style.RESET_ALL}").strip()
+        
+        # Берем токен из переменной окружения, если есть
+        token = os.getenv('TG_BOT_TOKEN', '')
+        if not token:
+            token = input(f"{Fore.MAGENTA}{Style.BRIGHT}└───> {Style.RESET_ALL}").strip()
+        
         try:
             if not token or not token.split(":")[0].isdigit():
                 raise Exception("Неправильный формат токена")
@@ -240,6 +248,7 @@ def first_setup():
             continue
         break
 
+    # Настройка пароля
     while True:
         print(
             f"\n{Fore.MAGENTA}{Style.BRIGHT}┌── {Fore.CYAN}Придумай пароль (его потребует Telegram-бот). Пароль должен содержать более 8 символов, заглавные, строчные буквы и хотя бы одну цифру "
@@ -256,12 +265,13 @@ def first_setup():
     config.set("Telegram", "token", token)
     config.set("Telegram", "secretKeyHash", hash_password(password))
 
+    # Настройка прокси для FunPay
     print(
         f"\n{Fore.MAGENTA}{Style.BRIGHT}┌── {Fore.CYAN}" f"Если хочешь использовать IPv4 прокси ДЛЯ ДОСТУПА К FUNPAY"
         f" – укажи их в формате scheme://login:password@ip:port, login:password@ip:port или ip:port."
         f" Если ты не знаешь, " f"что это такое или они тебе не нужны - просто нажми Enter. "
         f"{Fore.RED}(* ^ ω ^){Style.RESET_ALL}")
-    proxy = input_proxy(set_telebot_proxy=True)
+    proxy = input_proxy(set_telebot_proxy=False)
 
     if proxy:
         config.set("Proxy", "proxy", proxy)
