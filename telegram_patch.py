@@ -43,7 +43,7 @@ async def check_password(message: types.Message):
 async def start_bot():
     while True:
         try:
-            print("Telegram-бот запущен, ожидаем сообщения...")
+            print("Telegram-бот запущен, ожидаем сообщений...")
             await dp.start_polling()
         except TelegramAPIError as e:
             print("Ошибка Telegram API, переподключение...", e)
