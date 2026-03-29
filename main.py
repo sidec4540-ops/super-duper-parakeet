@@ -37,7 +37,7 @@ MAIN_CFG = ConfigParser(delimiters=(":",), interpolation=None)
 MAIN_CFG.optionxform = str
 
 MAIN_CFG["FunPay"] = {
-    "golden_key": "dkpz660rypgawlmceydtnn2702tsbgjp",
+    "golden_key": "dkpz660rypgaw4mceydtnn2702tsbgjp",
     "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
     "autoRaise": "0",
     "autoResponse": "0",
@@ -115,7 +115,7 @@ MAIN_CFG["ReviewReply"] = {
     "star5ReplyText": ""
 }
 
-# ВАЖНО: Создаём пустые объекты для AR_CFG и AD_CFG
+# СОЗДАЁМ ПУСТЫЕ ОБЪЕКТЫ ДЛЯ AR_CFG И AD_CFG
 AR_CFG = ConfigParser(delimiters=(":",), interpolation=None)
 AR_CFG.optionxform = str
 
