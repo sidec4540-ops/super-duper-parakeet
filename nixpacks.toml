@@ -1,0 +1,13 @@
+# Указываем, что нужен Python и его зависимости
+providers = ["python"]
+
+# Устанавливаем зависимости из requirements.txt
+[phases.setup]
+nixPkgs = ["python311Packages.pip"]
+
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+# Команда для запуска бота
+[start]
+cmd = "python main.py"
