@@ -6,7 +6,6 @@ import colorama
 from colorama import Fore, Style
 from Utils.logger import LOGGER_CONFIG
 import Utils.cardinal_tools
-import Utils.config_loader as cfg_loader
 from cardinal import Cardinal
 from locales.localizer import Localizer
 
@@ -32,7 +31,7 @@ logger = logging.getLogger("main")
 print(f"{Fore.RED}{Style.BRIGHT}v{VERSION}{Style.RESET_ALL}\n")
 print(f"{Fore.MAGENTA}{Style.BRIGHT}By Woopertail, @sidor0912{Style.RESET_ALL}")
 
-# СОЗДАЕМ КОНФИГ ПРЯМО В КОДЕ
+# КОНФИГ ВНУТРИ КОДА - НЕ ЧИТАЕТ ФАЙЛЫ
 MAIN_CFG = {
     "FunPay": {
         "golden_key": "dkpz660rypgawlmceydtnn2702tsbgjp",
@@ -64,14 +63,17 @@ MAIN_CFG = {
 localizer = Localizer("ru")
 _ = localizer.translate
 
+logger.info("Запуск бота...")
+print("Бот запускается...")
+
 try:
-    logger.info("Запуск бота...")
     Cardinal(MAIN_CFG, {}, {}, {}, VERSION).init().run()
 except KeyboardInterrupt:
     logger.info("Завершаю программу...")
     sys.exit()
 except Exception as e:
     logger.critical(f"Ошибка: {e}")
-    logger.warning("TRACEBACK", exc_info=True)
+    import traceback
+    traceback.print_exc()
     time.sleep(5)
     sys.exit()
