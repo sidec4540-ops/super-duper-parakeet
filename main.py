@@ -31,7 +31,7 @@ logger = logging.getLogger("main")
 print(f"{Fore.RED}{Style.BRIGHT}v{VERSION}{Style.RESET_ALL}\n")
 print(f"{Fore.MAGENTA}{Style.BRIGHT}By Woopertail, @sidor0912{Style.RESET_ALL}")
 
-# КОНФИГ ВНУТРИ КОДА - НЕ ЧИТАЕТ ФАЙЛЫ
+# ПОЛНЫЙ КОНФИГ СО ВСЕМИ СЕКЦИЯМИ
 MAIN_CFG = {
     "FunPay": {
         "golden_key": "dkpz660rypgawlmceydtnn2702tsbgjp",
@@ -52,6 +52,11 @@ MAIN_CFG = {
         "secretKeyHash": "MyPassword123",
         "blockLogin": "0",
         "proxy": ""
+    },
+    "Proxy": {
+        "enable": "0",
+        "proxy": "",
+        "check": "0"
     },
     "Other": {
         "watermark": "🐦",
