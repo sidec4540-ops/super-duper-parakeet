@@ -1,8 +1,9 @@
 import os
 import asyncio
 from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
 
-# Берём данные из Railway Variables
+# Получаем переменные окружения Railway
 TOKEN = os.getenv("TG_TOKEN")
 ADMIN_ID = int(os.getenv("ADMIN_IDS", "0"))
 PASSWORD = os.getenv("PASSWORD", "12345")
@@ -10,33 +11,37 @@ PASSWORD = os.getenv("PASSWORD", "12345")
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-authorized = False
+# Используем state через словарь для отслеживания авторизации
+user_authorized = {}
 
-@dp.message(commands=["start"])
+@dp.message(Command(commands=["start"]))
 async def start(message: types.Message):
     if message.from_user.id != ADMIN_ID:
-        await message.answer("Нет доступа")
+        await message.answer("❌ Нет доступа")
         return
-    await message.answer("Введите пароль")
+    user_authorized[message.from_user.id] = False
+    await message.answer("Введите пароль:")
 
 @dp.message()
 async def password_check(message: types.Message):
-    global authorized
-
     if message.from_user.id != ADMIN_ID:
         return
 
-    if not authorized:
+    if not user_authorized.get(message.from_user.id, False):
         if message.text == PASSWORD:
-            authorized = True
+            user_authorized[message.from_user.id] = True
             await message.answer("✅ Бот активирован")
         else:
             await message.answer("❌ Неверный пароль")
     else:
-        await message.answer("Бот работает")
+        await message.answer("Бот уже работает ✅")
 
 async def main():
-    print("Telegram бот запущен")
-    await dp.start_polling(bot)
+    print("🚀 Telegram бот запущен")
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await bot.session.close()
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
